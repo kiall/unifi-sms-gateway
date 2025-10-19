@@ -1,7 +1,8 @@
 # Unifi SMS Gateway
 
-This is a simple Python API that allows you to send SMS messages using a Unifi LTE Pro.
+Based on code from https://github.com/CppBunny/unifi_sms_gateway/
 
+This is a simple Python API that allows you to send SMS messages using a Unifi LTE Pro.
 
 # Usage
 
