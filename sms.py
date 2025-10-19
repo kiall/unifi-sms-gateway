@@ -1,3 +1,4 @@
+from functools import wraps
 from flask import Flask
 from flask import request
 import paramiko
@@ -27,13 +28,31 @@ def run_command(client, command):
     return _stdout.read().decode(), _stderr.read().decode()
 
 
+def auth_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        auth_header = request.headers.get("Authorization")
+        if auth_header is None:
+            return "MISSING AUTH", 403
+
+        auth = auth_header.split(" ", 2)
+        if len(auth) != 2:
+            return "INVALID AUTH", 403
+
+        if auth[0] != "Bearer":
+            return "INVALID AUTH", 403
+
+        if auth[1] != AUTH:
+            return "INVALID AUTH", 403
+
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
 @app.route("/sms/status", methods=["GET"])
+@auth_required
 def sms_status():
-    auth = request.headers.get("auth")
-
-    if not auth or auth != AUTH:
-        return "INVALID AUTH", 403
-
     client = build_client()
 
     out_info, err_info = run_command(client, "info all")
@@ -50,12 +69,8 @@ def sms_status():
 
 
 @app.route("/sms/retrieve", methods=["GET"])
+@auth_required
 def sms_retrieve():
-    auth = request.headers.get("auth")
-
-    if not auth or auth != AUTH:
-        return "INVALID AUTH", 403
-
     client = build_client()
 
     out_count, err_count = run_command(client, "sms count")
@@ -73,12 +88,8 @@ def sms_retrieve():
 
 
 @app.route("/sms/clear", methods=["DELETE"])
+@auth_required
 def sms_clear():
-    auth = request.headers.get("auth")
-
-    if not auth or auth != AUTH:
-        return "INVALID AUTH", 403
-
     client = build_client()
 
     run_command(client, "sms clear")
@@ -87,12 +98,8 @@ def sms_clear():
 
 
 @app.route("/sms/send/<number>", methods=["POST"])
+@auth_required
 def sms_send(number):
-    auth = request.headers.get("auth")
-
-    if not auth or auth != AUTH:
-        return "INVALID AUTH", 403
-
     content_path = request.args.get("path")
     if content_path:
         json = request.get_json(force=True)
