@@ -9,7 +9,7 @@ RUN \
 
 WORKDIR /app
 
-COPY requirements.txt /app
+COPY src/requirements.txt /app
 
 RUN apk update
 RUN apk add gcc
