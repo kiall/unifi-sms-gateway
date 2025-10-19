@@ -107,6 +107,9 @@ def sms_send(number):
         body = query.find(json)[0].value
     else:
         body = request.data.decode("UTF-8")
+      
+    if body == "" or body is None:
+        return "MISSING MESSAGE BODY", 400
 
     client = build_client()
 
