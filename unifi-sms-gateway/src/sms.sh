@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/with-contenv bashio
 
 export UNIFI_IP="$(bashio::config 'unifi_ip')"
 export UNIFI_USER="$(bashio::config 'unifi_user')"
