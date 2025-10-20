@@ -20,5 +20,4 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 COPY src/. /app
 RUN chmod +x /app/*.sh
 
-ENTRYPOINT ["python3"]
 CMD ["/app/sms.sh"]
