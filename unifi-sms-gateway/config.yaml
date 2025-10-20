@@ -13,8 +13,11 @@ arch:
 init: false
 map:
   - share:rw
+ports:
+  8585/tcp: 8585
 options:
   message: "Hello world..."
 schema:
   message: "str?"
+  api_key: "password"
 image: "ghcr.io/kiall/{arch}-addon-unifi-sms-gateway"
