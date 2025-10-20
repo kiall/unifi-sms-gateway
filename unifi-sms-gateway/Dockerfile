@@ -18,6 +18,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip3 install -r requirements.txt
 
 COPY src/. /app
+RUN chmod +x /app/*.sh
 
 ENTRYPOINT ["python3"]
-CMD ["sms.py"]
+CMD ["/app/sms.sh"]
