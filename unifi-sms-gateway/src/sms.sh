@@ -1,5 +1,7 @@
 #!/usr/bin/with-contenv bashio
 
+set -euo pipefail
+
 export UNIFI_IP="$(bashio::config 'unifi_ip')"
 export UNIFI_USER="$(bashio::config 'unifi_user')"
 export UNIFI_PASSWORD="$(bashio::config 'unifi_password')"
