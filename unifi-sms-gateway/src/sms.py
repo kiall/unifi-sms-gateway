@@ -1,4 +1,6 @@
 from functools import wraps
+import json
+import string
 from flask import Flask
 from flask import request
 import paramiko
@@ -57,16 +59,26 @@ def sms_status():
 
     out_info, err_info = run_command(client, "info all")
     out_sim, err_sim = run_command(client, "sim info")
-    out_temp, err_temp = run_command(client, "temp all")
 
     client.close()
 
-    out = (
-        f"DEVICE INFO:\n{out_info}\n\nSIM INFO:\n{out_sim}\n\nTEMPERATURES:\n{out_temp}"
-    )
+    data = {
+        "mac": ["1C:6A:1B:7C:1F:A3"],
+        "info": {},
+        "sim": {},
+    }
+
+    for line in out_info.splitlines():
+        key, value = line.split(":", 1)
+        data["info"][key.strip()] = value.strip()
+
+    for line in out_sim.splitlines():
+        key, value = line.split(":", 1)
+        data["sim"][key.strip()] = value.strip()
+
+    out = json.dumps(data, indent=4)
 
     return out, 200
-
 
 @app.route("/sms/retrieve", methods=["GET"])
 @auth_required
@@ -107,7 +119,7 @@ def sms_send(number):
         body = query.find(json)[0].value
     else:
         body = request.data.decode("UTF-8")
-      
+
     if body == "" or body is None:
         return "MISSING MESSAGE BODY", 400
 
