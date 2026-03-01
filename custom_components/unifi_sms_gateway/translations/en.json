@@ -1,0 +1,39 @@
+{
+  "config": {
+    "step": {},
+    "error": {},
+    "abort": {
+      "already_configured": "Unifi SMS Gateway is already configured."
+    }
+  },
+  "exceptions": {
+    "host_required": {
+      "message": "Host is required."
+    },
+    "port_required": {
+      "message": "Port is required."
+    },
+    "password_required": {
+      "message": "Password is required."
+    }
+  },
+  "services": {},
+  "entity": {
+    "sensor": {
+      "phone_number": {
+        "name": "Phone Number"
+      },
+      "imsi": {
+        "name": "IMSI"
+      },
+      "home_network_operator": {
+        "name": "Home Network Operator"
+      }
+    },
+    "notify": {
+      "notify": {
+        "name": "SMS {destination_number}"
+      }
+    }
+  }
+}
