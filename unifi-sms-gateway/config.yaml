@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Unifi SMS Gateway
-version: "0.0.9"
+version: "0.0.10"
 slug: unifi-sms-gateway
 description: Unifi SMS Gateway add-on
 url: "https://github.com/kiall/unifi-sms-gateway"
@@ -10,8 +10,8 @@ hassio_api: true
 discovery:
   - unifi_sms_gateway
 arch:
-#  - armhf
-#  - armv7
+  #  - armhf
+  #  - armv7
   - aarch64
   - amd64
 #  - i386
