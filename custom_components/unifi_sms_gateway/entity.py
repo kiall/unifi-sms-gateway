@@ -25,7 +25,7 @@ class UnifiSMSGatewayEntity(CoordinatorEntity[UnifiSMSGatewayCoordinator]):
 
         return DeviceInfo(
             name=self.coordinator.config_entry.data.get(CONF_NAME) or DEFAULT_NAME,
-            default_name=self.coordinator.config_entry.data.get(CONF_NAME) or DEFAULT_NAME,
+            # default_name=self.coordinator.config_entry.data.get(CONF_NAME) or DEFAULT_NAME,
             identifiers={(DOMAIN, self.coordinator.config_entry.entry_id)},
             connections=connections,
         )
