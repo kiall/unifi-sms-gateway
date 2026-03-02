@@ -114,14 +114,16 @@ def sms_clear():
 def sms_send(number):
     content_path = request.args.get("path")
     if content_path:
-        json = request.get_json(force=True)
+        json_in = request.get_json(force=True)
         query = jp.parse(content_path)
-        body = query.find(json)[0].value
+        body = query.find(json_in)[0].value
     else:
         body = request.data.decode("UTF-8")
 
+    resp = {}
+
     if body == "" or body is None:
-        return "MISSING MESSAGE BODY", 400
+        return json.dumps({"result": False, "error": "MISSING MESSAGE BODY"}), 400
 
     client = build_client()
 
@@ -129,8 +131,7 @@ def sms_send(number):
 
     client.close()
 
-    return "MESSAGE SENT", 200
-
+    return json.dumps({"result": True}), 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8585)

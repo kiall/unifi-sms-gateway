@@ -56,8 +56,9 @@ class UnifiSMSGatewayNotifyEntity(UnifiSMSGatewayEntity, NotifyEntity):
 
     def send_message(self, message: str, title: str | None = None) -> None:
         """Send a message."""
-        LOGGER.info("Sending message: %s", message)
+        self.async_send_message(message, title)
 
     async def async_send_message(self, message: str, title: str | None = None) -> None:
         """Send a message."""
         LOGGER.info("Sending message: %s", message)
+        await self.coordinator.async_send_message(self.destination_number, message)

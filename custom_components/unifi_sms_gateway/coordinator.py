@@ -48,3 +48,8 @@ class UnifiSMSGatewayCoordinator(DataUpdateCoordinator[UnifiSMSGatewayData]):
         so entities can quickly look up their data.
         """
         return await self._client.async_get_data()
+
+    async def async_send_message(self, destination_number: str, message: str):
+        """Send a message to the specified destination number."""
+
+        return await self._client.async_send_message(destination_number, message)

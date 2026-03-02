@@ -27,7 +27,7 @@ class UnifiSMSGatewayClient:
 
     async def async_get_data(self) -> UnifiSMSGatewayData:
         """ Fetches & combines all data from the UniFi SMS Gateway."""
-        status = await self.async_get_status()
+        status = await self._async_get_status()
 
         return UnifiSMSGatewayData(
             mac=status["mac"],
@@ -36,10 +36,39 @@ class UnifiSMSGatewayClient:
             home_network_operator=status["sim"]["Home Network Operator"],
         )
 
-    async def async_get_status(self):
+    async def _async_get_status(self):
         """Fetch status data from the UniFi SMS Gateway."""
         def blocking_task(self):
-            return requests.get(f"{self._api_url}/sms/status", headers={"Authorization": f"Bearer {self._api_token}"}, timeout=10)
+            return requests.get(
+                f"{self._api_url}/sms/status",
+                headers={"Authorization": f"Bearer {self._api_token}"},
+                timeout=10,
+            )
+
+        response = await asyncio.to_thread(blocking_task, self)
+
+        return response.json()
+
+    async def async_get_data(self) -> UnifiSMSGatewayData:
+        """ Fetches & combines all data from the UniFi SMS Gateway."""
+        status = await self._async_get_status()
+
+        return UnifiSMSGatewayData(
+            mac=status["mac"],
+            phone_number=status["sim"]["Phone Number"],
+            imsi=status["sim"]["IMSI"],
+            home_network_operator=status["sim"]["Home Network Operator"],
+        )
+
+    async def async_send_message(self, destination_number: str, message: str):
+        """Send a message to the specified destination number."""
+        def blocking_task(self):
+            return requests.post(
+                f"{self._api_url}/sms/send/{destination_number}",
+                headers={"Authorization": f"Bearer {self._api_token}"},
+                json={"message": message},
+                timeout=10,
+            )
 
         response = await asyncio.to_thread(blocking_task, self)
 
