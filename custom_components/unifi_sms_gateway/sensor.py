@@ -28,6 +28,17 @@ class UnifiSMSGatewayEntityDescription(SensorEntityDescription):
     """Describes Unifi SMS Gateway sensor entity."""
 
     value_fn: Callable[[Any], StateType]
+    extra_state_attributes_fn: Callable[[Any], dict | None] = None
+
+
+def extra_state_attributes(coordinator: UnifiSMSGatewayCoordinator) -> dict | None:
+    if len(coordinator.data.sms.messages) > 0:
+        return {
+            "sender": coordinator.data.sms.messages[0].sender,
+            "timestamp": coordinator.data.sms.messages[0].timestamp,
+        }
+    else:
+        return None
 
 
 SENSORS: tuple[UnifiSMSGatewayEntityDescription, ...] = (
@@ -54,6 +65,29 @@ SENSORS: tuple[UnifiSMSGatewayEntityDescription, ...] = (
         # state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda coordinator: coordinator.data.home_network_operator,
+    ),
+    # Stored SMS Count Sensor
+    UnifiSMSGatewayEntityDescription(
+        key="stored_sms_count",
+        translation_key="stored_sms_count",
+        # state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda coordinator: coordinator.data.sms.count,
+    ),
+    # Latest SMS Sensor
+    UnifiSMSGatewayEntityDescription(
+        key="latest_sms",
+        translation_key="latest_sms",
+        # state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda coordinator: (
+            coordinator.data.sms.messages[0].text
+            if coordinator.data.sms.messages
+            else None
+        ),
+        extra_state_attributes_fn=lambda coordinator: (
+            extra_state_attributes(coordinator)
+        ),
     ),
 )
 
@@ -97,5 +131,10 @@ class UnifiSMSGatewaySensorEntity(UnifiSMSGatewayEntity, SensorEntity):
         self._attr_available = True
 
         self._attr_native_value = self.entity_description.value_fn(self.coordinator)
+
+        if self.entity_description.extra_state_attributes_fn is not None:
+            self._attr_extra_state_attributes = (
+                self.entity_description.extra_state_attributes_fn(self.coordinator)
+            )
 
         self.async_write_ha_state()

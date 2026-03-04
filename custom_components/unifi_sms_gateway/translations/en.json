@@ -28,6 +28,12 @@
       },
       "home_network_operator": {
         "name": "Home Network Operator"
+      },
+      "stored_sms_count": {
+        "name": "Stored SMS Count"
+      },
+      "latest_sms": {
+        "name": "Latest SMS"
       }
     },
     "notify": {

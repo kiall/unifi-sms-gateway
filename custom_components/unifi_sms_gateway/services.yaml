@@ -1,0 +1,14 @@
+send_message:
+  name: Send Message
+  description: Sends a message to a specified destination.
+  fields:
+    destination_number:
+      name: Destination Number
+      description: The phone number to send the message to
+      required: true
+      example: 1234567890
+    message:
+      name: Message
+      description: The message to send
+      required: true
+      example: "Hello, this is a test message."

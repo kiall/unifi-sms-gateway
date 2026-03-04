@@ -1,16 +1,34 @@
 """The unifi_sms_gateway component."""
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.helpers.device_registry import (
     DeviceEntry,
 )
+import voluptuous as vol
+
 
 from .client import UnifiSMSGatewayClient
-from .const import DOMAIN, PLATFORMS, CONF_HOST, CONF_PORT, CONF_PASSWORD
+from .const import (
+    LOGGER,
+    DOMAIN,
+    PLATFORMS,
+    CONF_HOST,
+    CONF_PORT,
+    CONF_PASSWORD,
+    SERVICE_SEND_MESSAGE,
+)
 from .coordinator import UnifiSMSGatewayCoordinator
 
 type UnifiSMSGatewayConfigEntry = ConfigEntry[UnifiSMSGatewayCoordinator]
+
+# Schema for send_message service
+SEND_MESSAGE_SCHEMA = vol.Schema(
+    {
+        vol.Required("destination_number"): str,
+        vol.Required("message"): str,
+    }
+)
 
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
@@ -35,6 +53,24 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
     # Forward entry setup to platforms (e.g. load notify.py)
     await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORMS)
 
+    # Define Service Handlers
+    async def handle_send_message(call: ServiceCall) -> None:
+        """Handle the send_message service call."""
+        destination_number = call.data["destination_number"]
+        message = call.data["message"]
+
+        await coordinator.async_send_message(destination_number, message)
+
+    # Register Services
+    if not hass.services.has_service(DOMAIN, SERVICE_SEND_MESSAGE):
+        hass.services.async_register(
+            DOMAIN,
+            SERVICE_SEND_MESSAGE,
+            handle_send_message,
+            schema=SEND_MESSAGE_SCHEMA,
+        )
+
+    # Listen for config updates
     config_entry.async_on_unload(config_entry.add_update_listener(async_reload_entry))
 
     return True
@@ -47,6 +83,7 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
 
 async def async_reload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> None:
     """Reload config entry."""
+    LOGGER.info("Reloading config entry: %s", config_entry.entry_id)
     await hass.config_entries.async_reload(config_entry.entry_id)
 
 

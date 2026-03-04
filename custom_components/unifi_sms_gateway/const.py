@@ -16,3 +16,6 @@ DEFAULT_PORT = "8585"
 CONF_PASSWORD = "password"
 
 CONF_DESTINATION_NUMBERS = "destination_numbers"
+
+# Service names
+SERVICE_SEND_MESSAGE = "send_message"
