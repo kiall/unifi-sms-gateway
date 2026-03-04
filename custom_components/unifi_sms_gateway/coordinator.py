@@ -1,6 +1,9 @@
 from datetime import timedelta
 
-from custom_components.unifi_sms_gateway.client import UnifiSMSGatewayClient, UnifiSMSGatewayData
+from .client import (
+    UnifiSMSGatewayClient,
+    UnifiSMSGatewayData,
+)
 from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
 )
@@ -25,7 +28,7 @@ class UnifiSMSGatewayCoordinator(DataUpdateCoordinator[UnifiSMSGatewayData]):
             # Set always_update to `False` if the data returned from the
             # api can be compared via `__eq__` to avoid duplicate updates
             # being dispatched to listeners
-            always_update=True
+            always_update=True,
         )
 
         self._client = client

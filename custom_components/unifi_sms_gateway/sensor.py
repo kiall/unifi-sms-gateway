@@ -5,7 +5,12 @@ from dataclasses import dataclass
 
 from collections.abc import Callable
 from typing import Any
-from homeassistant.components.sensor import SensorEntity, SensorEntityDescription, SensorStateClass, SensorDeviceClass
+from homeassistant.components.sensor import (
+    SensorEntity,
+    SensorEntityDescription,
+    SensorStateClass,
+    SensorDeviceClass,
+)
 from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
@@ -16,6 +21,7 @@ from . import UnifiSMSGatewayConfigEntry
 from .coordinator import UnifiSMSGatewayCoordinator
 from .entity import UnifiSMSGatewayEntity
 from .const import LOGGER, DOMAIN
+
 
 @dataclass(kw_only=True)
 class UnifiSMSGatewayEntityDescription(SensorEntityDescription):
@@ -33,7 +39,6 @@ SENSORS: tuple[UnifiSMSGatewayEntityDescription, ...] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda coordinator: coordinator.data.phone_number,
     ),
-
     # IMSI Sensor
     UnifiSMSGatewayEntityDescription(
         key="imsi",
@@ -42,7 +47,6 @@ SENSORS: tuple[UnifiSMSGatewayEntityDescription, ...] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda coordinator: coordinator.data.imsi,
     ),
-
     # Home Network Operator Sensor
     UnifiSMSGatewayEntityDescription(
         key="home_network_operator",
@@ -52,6 +56,7 @@ SENSORS: tuple[UnifiSMSGatewayEntityDescription, ...] = (
         value_fn=lambda coordinator: coordinator.data.home_network_operator,
     ),
 )
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -64,16 +69,20 @@ async def async_setup_entry(
     await coordinator.async_config_entry_first_refresh()
 
     async_add_entities(
-        UnifiSMSGatewaySensorEntity(coordinator, description)
-        for description in SENSORS
+        UnifiSMSGatewaySensorEntity(coordinator, description) for description in SENSORS
     )
 
 
 class UnifiSMSGatewaySensorEntity(UnifiSMSGatewayEntity, SensorEntity):
     """Implement the sensor entity for Unifi SMS Gateway."""
+
     entity_description: UnifiSMSGatewayEntityDescription
 
-    def __init__(self, coordinator: UnifiSMSGatewayCoordinator, entity_description: UnifiSMSGatewayEntityDescription) -> None:
+    def __init__(
+        self,
+        coordinator: UnifiSMSGatewayCoordinator,
+        entity_description: UnifiSMSGatewayEntityDescription,
+    ) -> None:
         """Initialize the entity."""
         self._attr_unique_id = "sensor-%s" % entity_description.key
 

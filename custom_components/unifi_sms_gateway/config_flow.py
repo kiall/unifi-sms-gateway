@@ -11,9 +11,20 @@ from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.service_info.hassio import HassioServiceInfo
-from homeassistant.helpers.selector import (TextSelector, TextSelectorConfig)
+from homeassistant.helpers.selector import TextSelector, TextSelectorConfig
 
-from .const import DOMAIN, LOGGER, CONF_NAME, DEFAULT_NAME, CONF_HOST, DEFAULT_HOST, CONF_PORT, DEFAULT_PORT, CONF_PASSWORD ,CONF_DESTINATION_NUMBERS
+from .const import (
+    DOMAIN,
+    LOGGER,
+    CONF_NAME,
+    DEFAULT_NAME,
+    CONF_HOST,
+    DEFAULT_HOST,
+    CONF_PORT,
+    DEFAULT_PORT,
+    CONF_PASSWORD,
+    CONF_DESTINATION_NUMBERS,
+)
 
 
 def user_form_schema(user_input: dict[str, Any] | None) -> vol.Schema:
@@ -27,14 +38,14 @@ def user_form_schema(user_input: dict[str, Any] | None) -> vol.Schema:
             vol.Required(
                 CONF_PORT, default=user_input.get(CONF_PORT, DEFAULT_PORT)
             ): int,
-            vol.Required(
-                CONF_PASSWORD, default=user_input.get(CONF_PASSWORD)
-            ): str,
+            vol.Required(CONF_PASSWORD, default=user_input.get(CONF_PASSWORD)): str,
             vol.Optional(
-                CONF_DESTINATION_NUMBERS, default=user_input.get(CONF_DESTINATION_NUMBERS, [])
+                CONF_DESTINATION_NUMBERS,
+                default=user_input.get(CONF_DESTINATION_NUMBERS, []),
             ): TextSelector(config=TextSelectorConfig(multiple=True, type="tel")),
         }
     )
+
 
 async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, str]:
     """Validate the user input allows us to connect."""
@@ -90,7 +101,8 @@ class UnifiSMSGatewayConfigFlow(ConfigFlow, domain=DOMAIN):
             )
 
             return self.async_show_form(
-                step_id="reconfigure", data_schema=user_form_schema(existing_config_entry.data)
+                step_id="reconfigure",
+                data_schema=user_form_schema(existing_config_entry.data),
             )
 
         errors = {}
@@ -109,7 +121,9 @@ class UnifiSMSGatewayConfigFlow(ConfigFlow, domain=DOMAIN):
             )
 
         return self.async_show_form(
-            step_id="reconfigure", data_schema=user_form_schema(user_input), errors=errors
+            step_id="reconfigure",
+            data_schema=user_form_schema(user_input),
+            errors=errors,
         )
 
     async def async_step_hassio(
@@ -146,6 +160,7 @@ class UnifiSMSGatewayConfigFlow(ConfigFlow, domain=DOMAIN):
             return self.async_abort(reason="unknown")
 
         return self.async_create_entry(title=info["title"], data=self.hassio_discovery)
+
 
 class ConfigError(HomeAssistantError):
     """Error to indicate a configuration issue."""

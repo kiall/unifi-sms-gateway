@@ -20,7 +20,8 @@
         "ms-python.pylint",
         "ms-python.vscode-pylance",
         "redhat.vscode-yaml",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "ms-python.black-formatter"
       ],
       "settings": {
         "terminal.integrated.profiles.linux": {
