@@ -2,12 +2,16 @@
   "name": "Example devcontainer for add-on repositories",
   "image": "ghcr.io/home-assistant/devcontainer:2-addons",
   "appPort": ["8123:8123", "4357:4357", "8585:8585"],
-  "postStartCommand": "bash devcontainer_bootstrap",
+  "postStartCommand": "bash /mnt/supervisor/addons/local/unifi_sms_gateway/.devcontainer/post-start.sh",
   "runArgs": ["-e", "GIT_EDITOR=code --wait", "--privileged"],
   "workspaceFolder": "/mnt/supervisor/addons/local/${localWorkspaceFolderBasename}",
   "workspaceMount": "source=${localWorkspaceFolder},target=${containerWorkspaceFolder},type=bind,consistency=cached",
   "containerEnv": {
-    "WORKSPACE_DIRECTORY": "${containerWorkspaceFolder}"
+    "WORKSPACE_DIRECTORY": "${containerWorkspaceFolder}",
+    "VIRTUAL_ENV": "/home/vscode/.local/ha-venv"
+  },
+  "remoteEnv": {
+    "PATH": "/home/vscode/.local/ha-venv/bin:/home/vscode/.local/bin:${containerEnv:PATH}"
   },
   "customizations": {
     "vscode": {
@@ -29,6 +33,12 @@
         "editor.formatOnSave": true,
         "editor.formatOnType": true,
         "files.trimTrailingWhitespace": true,
+        "python.defaultInterpreterPath": "/home/vscode/.local/ha-venv/bin/python",
+        "python.pythonPath": "/home/vscode/.local/ha-venv/bin/python",
+        "python.terminal.activateEnvInCurrentTerminal": true,
+        "pylint.importStrategy": "fromEnvironment",
+        // Pyright type checking is not compatible with mypy which Home Assistant uses for type checking
+        "python.analysis.typeCheckingMode": "off",
         "[python]": {
           "editor.defaultFormatter": "charliermarsh.ruff"
         }
