@@ -4,7 +4,7 @@ version: "0.0.12"
 slug: unifi-sms-gateway
 description: Unifi SMS Gateway add-on
 url: "https://github.com/kiall/unifi-sms-gateway"
-image: "ghcr.io/kiall/{arch}-addon-unifi-sms-gateway"
+#image: "ghcr.io/kiall/{arch}-addon-unifi-sms-gateway"
 startup: services
 hassio_api: true
 discovery:

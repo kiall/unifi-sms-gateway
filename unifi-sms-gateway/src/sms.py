@@ -80,6 +80,7 @@ def sms_status():
 
     return out, 200
 
+
 @app.route("/sms/retrieve", methods=["GET"])
 @auth_required
 def sms_retrieve():
@@ -87,14 +88,14 @@ def sms_retrieve():
 
     out_count, err_count = run_command(client, "sms count")
 
+    client.close()
+
     count = out_count.replace("\n", "")
     if count == "0":
         out = "NO STORED MESSAGES"
     else:
         out_list, err_list = run_command(client, "sms list")
         out = f"{count} STORED MESSAGES:\n{out_list}"
-
-    client.close()
 
     return out, 200
 
@@ -105,6 +106,8 @@ def sms_clear():
     client = build_client()
 
     run_command(client, "sms clear")
+
+    client.close()
 
     return "ALL STORED MESSAGES CLEARED", 200
 
@@ -132,6 +135,7 @@ def sms_send(number):
     client.close()
 
     return json.dumps({"result": True}), 200
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8585)
