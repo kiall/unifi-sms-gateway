@@ -11,9 +11,9 @@ from smspdudecoder.easy import read_incoming_sms
 
 app = Flask(__name__)
 
-IP = os.getenv("UNIFI_IP")
-USER = os.getenv("UNIFI_USER")
-PASS = os.getenv("UNIFI_PASSWORD")
+IP = os.getenv("ULTE_SSH_IP")
+USER = os.getenv("ULTE_SSH_USER")
+PASS = os.getenv("ULTE_SSH_PASSWORD")
 AUTH = os.getenv("SMS_AUTH")
 
 

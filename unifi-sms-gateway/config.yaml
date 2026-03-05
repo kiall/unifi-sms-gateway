@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Unifi SMS Gateway
-version: "0.0.14"
+version: "0.0.15"
 slug: unifi-sms-gateway
 description: Unifi SMS Gateway add-on
 url: "https://github.com/kiall/unifi-sms-gateway"
@@ -21,7 +21,7 @@ map:
 ports:
   8585/tcp: 8585
 schema:
-  unifi_ip: "str"
-  unifi_user: "str"
-  unifi_password: "password"
+  ulte_ssh_ip: "str"
+  ulte_ssh_user: "str"
+  ulte_ssh_password: "password"
   api_key: "password"

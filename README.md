@@ -14,6 +14,6 @@ Real Docs TODO.
 
 1. Install Componment via HACS, do not setup.
 2. Install Addon/App
-3. Setup Addon - IP=ULTE-Pro IP, Unifi User/Pass are SSH creds for the ULTE-Pro, API Key - Pick anything.
+3. Setup Addon - IP is ULTE-Pro IP, User/Pass are SSH creds for the ULTE-Pro, API Key - Pick anything.
 4. Add discovered integration
 5. Reconfigure discovered integration to add destination numbers

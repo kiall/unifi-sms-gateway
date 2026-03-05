@@ -2,9 +2,9 @@
 
 set -euo pipefail
 
-export UNIFI_IP="$(bashio::config 'unifi_ip')"
-export UNIFI_USER="$(bashio::config 'unifi_user')"
-export UNIFI_PASSWORD="$(bashio::config 'unifi_password')"
+export ULTE_SSH_IP="$(bashio::config 'ulte_ssh_ip')"
+export ULTE_SSH_USER="$(bashio::config 'ulte_ssh_user')"
+export ULTE_SSH_PASSWORD="$(bashio::config 'ulte_ssh_password')"
 export SMS_AUTH="$(bashio::config 'api_key')"
 
 # Prepare discovery payload
@@ -18,7 +18,7 @@ discovery_config=$(\
 
 bashio::log.info "Sending discovery information to Home Assistant..."
 if bashio::discovery "unifi_sms_gateway" "${discovery_config}" > /dev/null; then
-    bashio::log.info "Successfully send discovery information to Home Assistant."
+    bashio::log.info "Successfully sent discovery information to Home Assistant."
 else
     bashio::log.error "Discovery message to Home Assistant failed!"
 fi
