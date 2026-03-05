@@ -1,16 +1,15 @@
 """Support for Fully Kiosk Browser notifications."""
 
 from __future__ import annotations
-from dataclasses import dataclass
 import asyncio
 
 from homeassistant.components.button import (
     ButtonEntity,
     ButtonEntityDescription,
 )
-from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+from homeassistant.util.frozen_dataclass_compat import FrozenOrThawed
 
 from . import UnifiSMSGatewayConfigEntry
 from .coordinator import UnifiSMSGatewayCoordinator
@@ -18,8 +17,9 @@ from .entity import UnifiSMSGatewayEntity
 from .const import LOGGER, DOMAIN
 
 
-@dataclass(kw_only=True)
-class UnifiSMSGatewayButtonEntityDescription(ButtonEntityDescription):
+class UnifiSMSGatewayButtonEntityDescription(
+    ButtonEntityDescription, metaclass=FrozenOrThawed, frozen_or_thawed=True
+):
     """Describes Unifi SMS Gateway button entity."""
 
 

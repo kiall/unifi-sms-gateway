@@ -1,21 +1,19 @@
 """Support for Fully Kiosk Browser notifications."""
 
 from __future__ import annotations
-from dataclasses import dataclass
 
 from collections.abc import Callable
 from typing import Any
 from homeassistant.components.sensor import (
     SensorEntity,
     SensorEntityDescription,
-    SensorStateClass,
-    SensorDeviceClass,
 )
 from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.typing import StateType
 from homeassistant.core import callback
+from homeassistant.util.frozen_dataclass_compat import FrozenOrThawed
 
 from . import UnifiSMSGatewayConfigEntry
 from .coordinator import UnifiSMSGatewayCoordinator
@@ -23,8 +21,9 @@ from .entity import UnifiSMSGatewayEntity
 from .const import LOGGER, DOMAIN
 
 
-@dataclass(kw_only=True)
-class UnifiSMSGatewaySensorEntityDescription(SensorEntityDescription):
+class UnifiSMSGatewaySensorEntityDescription(
+    SensorEntityDescription, metaclass=FrozenOrThawed, frozen_or_thawed=True
+):
     """Describes Unifi SMS Gateway sensor entity."""
 
     value_fn: Callable[[Any], StateType]

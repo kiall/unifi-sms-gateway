@@ -6,11 +6,18 @@ from collections.abc import Mapping
 from homeassistant.components.notify import NotifyEntity, NotifyEntityDescription
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+from homeassistant.util.frozen_dataclass_compat import FrozenOrThawed
 
 from . import UnifiSMSGatewayConfigEntry
 from .coordinator import UnifiSMSGatewayCoordinator
 from .entity import UnifiSMSGatewayEntity
 from .const import LOGGER, DOMAIN, CONF_DESTINATION_NUMBERS
+
+
+class UnifiSMSGatewayNotifyEntityDescription(
+    NotifyEntityDescription, metaclass=FrozenOrThawed, frozen_or_thawed=True
+):
+    """Describes Unifi SMS Gateway notify entity."""
 
 
 async def async_setup_entry(
@@ -26,7 +33,7 @@ async def async_setup_entry(
     async_add_entities(
         UnifiSMSGatewayNotifyEntity(
             coordinator,
-            NotifyEntityDescription(
+            UnifiSMSGatewayNotifyEntityDescription(
                 key="notify",
                 translation_key="notify",
             ),
@@ -39,14 +46,14 @@ async def async_setup_entry(
 class UnifiSMSGatewayNotifyEntity(UnifiSMSGatewayEntity, NotifyEntity):
     """Implement the notify entity for Unifi SMS Gateway."""
 
-    entity_description: NotifyEntityDescription
+    entity_description: UnifiSMSGatewayNotifyEntityDescription
 
     destination_number: str | None = None
 
     def __init__(
         self,
         coordinator: UnifiSMSGatewayCoordinator,
-        entity_description: NotifyEntityDescription,
+        entity_description: UnifiSMSGatewayNotifyEntityDescription,
         destination_number: str,
     ) -> None:
         """Initialize the entity."""
