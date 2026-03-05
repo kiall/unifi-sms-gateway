@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
 from typing import Any
 
 import voluptuous as vol
 
-from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
+from homeassistant.config_entries import (
+    ConfigFlow,
+    ConfigFlowResult,
+)
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.service_info.hassio import HassioServiceInfo
@@ -23,6 +25,7 @@ from .const import (
     CONF_PORT,
     DEFAULT_PORT,
     CONF_PASSWORD,
+    CONF_DESTINATION_NUMBER,
     CONF_DESTINATION_NUMBERS,
 )
 
@@ -43,6 +46,19 @@ def user_form_schema(user_input: dict[str, Any] | None) -> vol.Schema:
                 CONF_DESTINATION_NUMBERS,
                 default=user_input.get(CONF_DESTINATION_NUMBERS, []),
             ): TextSelector(config=TextSelectorConfig(multiple=True, type="tel")),
+        }
+    )
+
+
+def destination_number_form_schema(user_input: dict[str, Any] | None) -> vol.Schema:
+    """Return destination number form schema."""
+    user_input = user_input or {}
+    return vol.Schema(
+        {
+            vol.Required(
+                CONF_DESTINATION_NUMBER,
+                default=user_input.get(CONF_DESTINATION_NUMBER, ""),
+            ): str,
         }
     )
 

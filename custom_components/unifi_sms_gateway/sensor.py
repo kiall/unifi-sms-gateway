@@ -24,7 +24,7 @@ from .const import LOGGER, DOMAIN
 
 
 @dataclass(kw_only=True)
-class UnifiSMSGatewayEntityDescription(SensorEntityDescription):
+class UnifiSMSGatewaySensorEntityDescription(SensorEntityDescription):
     """Describes Unifi SMS Gateway sensor entity."""
 
     value_fn: Callable[[Any], StateType]
@@ -41,9 +41,9 @@ def extra_state_attributes(coordinator: UnifiSMSGatewayCoordinator) -> dict | No
         return None
 
 
-SENSORS: tuple[UnifiSMSGatewayEntityDescription, ...] = (
+SENSORS: tuple[UnifiSMSGatewaySensorEntityDescription, ...] = (
     # Phone Number Sensor
-    UnifiSMSGatewayEntityDescription(
+    UnifiSMSGatewaySensorEntityDescription(
         key="phone_number",
         translation_key="phone_number",
         # state_class=SensorStateClass.MEASUREMENT,
@@ -51,7 +51,7 @@ SENSORS: tuple[UnifiSMSGatewayEntityDescription, ...] = (
         value_fn=lambda coordinator: coordinator.data.phone_number,
     ),
     # IMSI Sensor
-    UnifiSMSGatewayEntityDescription(
+    UnifiSMSGatewaySensorEntityDescription(
         key="imsi",
         translation_key="imsi",
         # state_class=SensorStateClass.MEASUREMENT,
@@ -59,7 +59,7 @@ SENSORS: tuple[UnifiSMSGatewayEntityDescription, ...] = (
         value_fn=lambda coordinator: coordinator.data.imsi,
     ),
     # Home Network Operator Sensor
-    UnifiSMSGatewayEntityDescription(
+    UnifiSMSGatewaySensorEntityDescription(
         key="home_network_operator",
         translation_key="home_network_operator",
         # state_class=SensorStateClass.MEASUREMENT,
@@ -67,7 +67,7 @@ SENSORS: tuple[UnifiSMSGatewayEntityDescription, ...] = (
         value_fn=lambda coordinator: coordinator.data.home_network_operator,
     ),
     # Stored SMS Count Sensor
-    UnifiSMSGatewayEntityDescription(
+    UnifiSMSGatewaySensorEntityDescription(
         key="stored_sms_count",
         translation_key="stored_sms_count",
         # state_class=SensorStateClass.MEASUREMENT,
@@ -75,7 +75,7 @@ SENSORS: tuple[UnifiSMSGatewayEntityDescription, ...] = (
         value_fn=lambda coordinator: coordinator.data.sms.count,
     ),
     # Latest SMS Sensor
-    UnifiSMSGatewayEntityDescription(
+    UnifiSMSGatewaySensorEntityDescription(
         key="latest_sms",
         translation_key="latest_sms",
         # state_class=SensorStateClass.MEASUREMENT,
@@ -110,12 +110,12 @@ async def async_setup_entry(
 class UnifiSMSGatewaySensorEntity(UnifiSMSGatewayEntity, SensorEntity):
     """Implement the sensor entity for Unifi SMS Gateway."""
 
-    entity_description: UnifiSMSGatewayEntityDescription
+    entity_description: UnifiSMSGatewaySensorEntityDescription
 
     def __init__(
         self,
         coordinator: UnifiSMSGatewayCoordinator,
-        entity_description: UnifiSMSGatewayEntityDescription,
+        entity_description: UnifiSMSGatewaySensorEntityDescription,
     ) -> None:
         """Initialize the entity."""
         self._attr_unique_id = "sensor-%s" % entity_description.key

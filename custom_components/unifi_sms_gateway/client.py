@@ -111,3 +111,17 @@ class UnifiSMSGatewayClient:
         response = await asyncio.to_thread(blocking_task, self)
 
         return response.json()
+
+    async def async_clear_stored_messages(self):
+        """Clear stored messages from the UniFi SMS Gateway."""
+
+        def blocking_task(self):
+            return requests.delete(
+                f"{self._api_url}/sms/clear",
+                headers={"Authorization": f"Bearer {self._api_token}"},
+                timeout=10,
+            )
+
+        response = await asyncio.to_thread(blocking_task, self)
+
+        return response.json()

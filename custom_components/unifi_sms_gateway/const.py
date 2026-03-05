@@ -2,7 +2,7 @@ import logging
 
 LOGGER = logging.getLogger(__package__)
 DOMAIN = "unifi_sms_gateway"
-PLATFORMS = ["notify", "sensor"]
+PLATFORMS = ["notify", "sensor", "button"]
 
 CONF_NAME = "name"
 DEFAULT_NAME = "UniFi SMS Gateway"
@@ -14,7 +14,7 @@ CONF_PORT = "port"
 DEFAULT_PORT = "8585"
 
 CONF_PASSWORD = "password"
-
+CONF_DESTINATION_NUMBER = "destination_number"
 CONF_DESTINATION_NUMBERS = "destination_numbers"
 
 # Service names

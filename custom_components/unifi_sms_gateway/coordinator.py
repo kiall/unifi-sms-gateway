@@ -56,3 +56,8 @@ class UnifiSMSGatewayCoordinator(DataUpdateCoordinator[UnifiSMSGatewayData]):
         """Send a message to the specified destination number."""
 
         return await self._client.async_send_message(destination_number, message)
+
+    async def async_clear_stored_messages(self):
+        """Clear all stored messages from the gateway."""
+
+        return await self._client.async_clear_stored_messages()

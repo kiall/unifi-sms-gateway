@@ -7,7 +7,7 @@
   "iot_class": "local_polling",
   "integration_type": "hub",
   "config_flow": true,
-  "single_config_entry": false,
+  "single_config_entry": true,
   "version": "0.0.14",
   "loggers": [
     "custom_components.unifi_sms_gateway"

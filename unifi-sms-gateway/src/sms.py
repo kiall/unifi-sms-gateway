@@ -219,7 +219,7 @@ def sms_clear():
 
     client.close()
 
-    return "ALL STORED MESSAGES CLEARED", 200
+    return json.dumps({"result": True}), 200
 
 
 @app.route("/sms/send/<number>", methods=["POST"])

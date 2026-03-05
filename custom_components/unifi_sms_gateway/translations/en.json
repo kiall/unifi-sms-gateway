@@ -40,6 +40,11 @@
       "notify": {
         "name": "SMS {destination_number}"
       }
+    },
+    "button": {
+      "clear_stored_messages": {
+        "name": "Clear Stored Messages"
+      }
     }
   }
 }
