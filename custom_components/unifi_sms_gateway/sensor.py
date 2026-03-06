@@ -1,5 +1,3 @@
-"""Support for Fully Kiosk Browser notifications."""
-
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -117,7 +115,7 @@ class UnifiSMSGatewaySensorEntity(UnifiSMSGatewayEntity, SensorEntity):
         entity_description: UnifiSMSGatewaySensorEntityDescription,
     ) -> None:
         """Initialize the entity."""
-        self._attr_unique_id = "sensor-%s" % entity_description.key
+        self._attr_unique_id = f"sensor-{entity_description.key}"
 
         UnifiSMSGatewayEntity.__init__(self, coordinator, entity_description)
         SensorEntity.__init__(self)

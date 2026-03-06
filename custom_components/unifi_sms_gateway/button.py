@@ -1,5 +1,3 @@
-"""Support for Fully Kiosk Browser notifications."""
-
 from __future__ import annotations
 import asyncio
 
@@ -58,7 +56,7 @@ class UnifiSMSGatewayButtonEntity(UnifiSMSGatewayEntity, ButtonEntity):
         entity_description: UnifiSMSGatewayButtonEntityDescription,
     ) -> None:
         """Initialize the entity."""
-        self._attr_unique_id = "button-%s" % entity_description.key
+        self._attr_unique_id = f"button-{entity_description.key}"
 
         UnifiSMSGatewayEntity.__init__(self, coordinator, entity_description)
         ButtonEntity.__init__(self)

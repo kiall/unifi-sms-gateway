@@ -1,5 +1,3 @@
-"""Support for Fully Kiosk Browser notifications."""
-
 from __future__ import annotations
 from collections.abc import Mapping
 
@@ -58,7 +56,7 @@ class UnifiSMSGatewayNotifyEntity(UnifiSMSGatewayEntity, NotifyEntity):
     ) -> None:
         """Initialize the entity."""
 
-        self._attr_unique_id = "notify-%s" % destination_number
+        self._attr_unique_id = f"notify-{destination_number}"
         self.destination_number = destination_number
         self.translation_placeholders: Mapping[str, str] = {
             "destination_number": destination_number
