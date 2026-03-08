@@ -81,5 +81,5 @@ actions:
     target:
       entity_id: todo.shopping_list
     data:
-      item: "{{ trigger.to_state.state }}"
+      item: {{ trigger.to_state.state }} (SMS Sender: {{ trigger.to_state.attributes.sender }})
 ```
