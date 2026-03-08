@@ -225,22 +225,15 @@ def sms_clear():
 @app.route("/sms/send/<number>", methods=["POST"])
 @auth_required
 def sms_send(number):
-    content_path = request.args.get("path")
-    if content_path:
-        json_in = request.get_json(force=True)
-        query = jp.parse(content_path)
-        body = query.find(json_in)[0].value
-    else:
-        body = request.data.decode("UTF-8")
+    json_in = request.get_json(force=True)
+    message = json_in["message"]
 
-    resp = {}
-
-    if body == "" or body is None:
+    if message == "" or message is None:
         return json.dumps({"result": False, "error": "MISSING MESSAGE BODY"}), 400
 
     client = build_client()
 
-    run_command(client, f'sms send {number} "{body}"')
+    run_command(client, f'sms send {number} "{message}"')
 
     client.close()
 

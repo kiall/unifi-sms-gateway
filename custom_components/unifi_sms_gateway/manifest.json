@@ -5,10 +5,10 @@
   "dependencies": [],
   "documentation": "https://github.com/kiall/unifi-sms-gateway",
   "iot_class": "local_polling",
-  "integration_type": "hub",
+  "integration_type": "device",
   "config_flow": true,
   "single_config_entry": true,
-  "version": "0.0.15",
+  "version": "0.0.16",
   "loggers": [
     "custom_components.unifi_sms_gateway"
   ]
