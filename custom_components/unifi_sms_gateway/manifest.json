@@ -8,7 +8,7 @@
   "integration_type": "device",
   "config_flow": true,
   "single_config_entry": true,
-  "version": "0.0.16",
+  "version": "0.1.0",
   "loggers": [
     "custom_components.unifi_sms_gateway"
   ]
